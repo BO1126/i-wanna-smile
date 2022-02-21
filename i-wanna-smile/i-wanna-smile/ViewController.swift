@@ -40,7 +40,7 @@ class ViewController: UIViewController {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if yValue < 230{
+        if yValue < 235{
             if touches.first!.location(in: touches.first?.view).y < touchBeganLocation.y{
                 self.yValue += 1
                 self.greenValue += 3
@@ -53,8 +53,8 @@ class ViewController: UIViewController {
                 faceView.backgroundColor = UIColor(red: 229/255, green: CGFloat(greenValue)/255, blue: CGFloat(blueValue)/255, alpha: 1)
             }
             
-            if yValue == 229{
-                self.checkImageView.image = UIImage(systemName: "checkmark.circle.fill")
+            if yValue == 234{
+                self.checkImageView.image = UIImage(systemName: "smiley.fill")
                 self.checkImageView.tintColor = UIColor.systemGreen
                 
             }
