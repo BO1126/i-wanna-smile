@@ -12,6 +12,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var faceView : UIView!
     @IBOutlet weak var firstEyeView : UIView!
     @IBOutlet weak var secondEyeView : UIView!
+    @IBOutlet weak var checkImageView : UIImageView!
+    
+    var touchBeganLocation = CGPoint(x: 0.0, y: 0.0)
+    var yValue = 160
+    var greenValue = 0
+    var blueValue = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,16 +36,31 @@ class ViewController: UIViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let mouthview = mouthview(frame: self.view.frame)
-        mouthview.backgroundColor = .clear
-        faceView.addSubview(mouthview)
-        print("a\(touches.first!.location(in: touches.first?.view))")
+        touchBeganLocation = touches.first!.location(in: touches.first?.view)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("b\(touches.first!.location(in: touches.first?.view))")
+        if yValue < 230{
+            if touches.first!.location(in: touches.first?.view).y < touchBeganLocation.y{
+                self.yValue += 1
+                self.greenValue += 3
+                self.blueValue += 2
+                let mouthview = mouthview(frame: self.view.frame)
+                mouthview.backgroundColor = .clear
+                mouthview.path.move(to: CGPoint(x: 60, y: 160))
+                mouthview.path.addQuadCurve(to: CGPoint(x: 180, y: 160), controlPoint: CGPoint(x: 120, y: self.yValue))
+                faceView.addSubview(mouthview)
+                faceView.backgroundColor = UIColor(red: 229/255, green: CGFloat(greenValue)/255, blue: CGFloat(blueValue)/255, alpha: 1)
+            }
+            
+            if yValue == 229{
+                self.checkImageView.image = UIImage(systemName: "checkmark.circle.fill")
+                self.checkImageView.tintColor = UIColor.systemGreen
+                
+            }
+        }
     }
-
+    
 }
 
 class mouthview : UIView {
@@ -47,9 +68,8 @@ class mouthview : UIView {
     let path = UIBezierPath()
     
     override func draw(_ rect: CGRect) {
-        path.move(to: CGPoint(x: 80, y: 160))
-        path.lineWidth = 10
-        path.addLine(to: CGPoint(x: 160, y: 160))
+        path.move(to: CGPoint(x: 60, y: 160))
+        path.addLine(to: CGPoint(x: 180, y: 160))
         path.stroke()
     }
     
